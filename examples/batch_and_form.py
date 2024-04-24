@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.1.0"
+__generated_with = "0.4.3"
 app = marimo.App()
 
 
@@ -29,9 +29,9 @@ def __(mo, reset):
         mo.md(
             """
             Choose your variable values
-        
+
             {x}
-        
+
             {y}
             """
         )

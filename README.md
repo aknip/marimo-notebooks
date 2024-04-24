@@ -1,29 +1,21 @@
 # Start
 
-Terminal:
-docker compose up
+## Virtual environment using uv
+- Install: curl -LsSf https://astral.sh/uv/install.sh | sh
+- Create a virtual environment in current dir in folder .venv.
+	- `uv venv`
+- Activate environment
+	- `source .venv/bin/activate`
+- Deactivate environment
+	- `deactivate`
 
-Browser: 
-http://localhost:1865/admin/
+## Install dependencies
 
-
-# Config for Ollama LLM
-- Base URL:
-    http://host.docker.internal:11434
-- Model: For example:
-    mixtral-8x7b-instruct-v0.1-q4_0-32k
-    gemma-7b-instruct-8k
-- all other params can be left empty, will be filled automatically after saving
+uv pip install -r requirements.txt
 
 
-# Information
+# Start marimo
 
-## How to install with Docker Compose
-https://cheshire-cat-ai.github.io/docs/quickstart/installation-configuration/
+marimo edit 
+marimo edit hello-world-marimo.py
 
-Um von Chehsire auf lokales Ollama zugreifen zu können, muss in  Docker der Netzwerkzugriff auf den Host freigeschaltet werden:
-	- Docker:  `--add-host=host.docker.internal:host-gateway`
-	- In Docker Compose muss ergänzt werden:
-		extra_hosts:
-			- "host.docker.internal:host-gateway"
-	- Danach kann Cheshire aus Docker heraus auf den Host zugreifen. Die URL ist dann nicht "localhost" oder "127.0.0.1" sondern `http://host.docker.internal`
