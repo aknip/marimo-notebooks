@@ -53,8 +53,9 @@ def __(get_settings, mo):
 
 
 @app.cell
-def __(api_key_list, os):
-    os.environ["OPENAI_API_KEY"] = api_key_list.value
+def __(api_key_list, json, os):
+    _api_key_list = json.loads(api_key_list.value)
+    os.environ["OPENAI_API_KEY"] = _api_key_list['OpenAI']['v2']['credential'] # my key
     return
 
 
@@ -138,7 +139,7 @@ def __(mo, pickle):
                 "test1": "abc",
                 "test2": "xyz",
                 "report_name": "default name",
-                "api_keys": {}
+                "api_keys": "{}"
             }
             set_settings(_config)
             saveData("config.pickle")
