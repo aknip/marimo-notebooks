@@ -43,7 +43,7 @@ def __(mo):
 @app.cell
 def __(mo, openaikey):
     start_button = mo.ui.button(
-        label="Start next cell",
+        label="Caluculate date and time",
         value=0, 
         on_click=lambda count: count + 1
     )
@@ -54,16 +54,14 @@ def __(mo, openaikey):
 
 @app.cell
 def __(mo, openaikey):
-    mo.md("""The following cell
-    - is not exectued on start
-    - is executed each time if "Start next cell" is clicked
+    mo.md("""The following cell is **not** exectued on start. It is executed each time if "Start next cell" is clicked
     """) if openaikey.value else None
     return
 
 
 @app.cell
 def __(datetime, mo, start_button):
-    mo.stop(start_button.value == 0)
+    mo.stop(start_button.value == 0, mo.md("-Click button to start...-"))
 
     my_date_time2 = datetime.now().strftime("%d.%m.%Y, %H:%M:%S")
     mo.md(
@@ -72,6 +70,53 @@ def __(datetime, mo, start_button):
         """
     )
     return my_date_time2,
+
+
+@app.cell
+def __(mo, start_button):
+    mo.md("""The following cell is **not** exectued on start. It is executed each time if "Start next cell" is clicked
+    """) if start_button.value != 0 else None
+    return
+
+
+@app.cell
+def __(mo, start_button):
+    #form = mo.ui.text(label="Your name").form()
+
+    form = (
+        mo.md('''
+        **Your form.**
+
+        {name1}
+
+        {date1}
+    ''')
+        .batch(
+            name1=mo.ui.text(label="Name"),
+            date1=mo.ui.date(label="Date"),
+        )
+        .form(show_clear_button=True, bordered=False)
+    )
+    form if start_button.value != 0 else None
+    return form,
+
+
+@app.cell
+def __(form, mo):
+    mo.stop(form.value is None, mo.md("Submit the form to continue"))
+
+    mo.md(f"Hello, {form.value['name1']}!")
+    return
+
+
+@app.cell
+def __():
+    return
+
+
+@app.cell
+def __():
+    return
 
 
 @app.cell
