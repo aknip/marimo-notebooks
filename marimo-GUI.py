@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.7.17"
+__generated_with = "0.7.20"
 app = marimo.App()
 
 
@@ -57,9 +57,9 @@ def __(get_settings, mo):
 
 
 @app.cell
-def __(api_key_list, json):
+def __(api_key_list, json, os):
     _api_key_list = json.loads(api_key_list.value)
-    #os.environ["OPENAI_API_KEY"] = _api_key_list['OpenAI']['v2']['credential'] # my key
+    os.environ["OPENAI_API_KEY"] = _api_key_list['OpenAI']['v2']['credential'] # my key
     return
 
 

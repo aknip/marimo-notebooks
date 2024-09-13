@@ -1,15 +1,19 @@
 import marimo
 
-__generated_with = "0.4.3"
+__generated_with = "0.7.17"
 app = marimo.App()
 
 
 @app.cell
 def __(mo):
-    mo.md("""# Test context size in local LLMs
+    mo.md(
+        """
+        # Test context size in local LLMs
 
-    - Needle in a haystack test
-    - Do not use texts on which the model was trained, eg. new texts from https://paulgraham.com (no Gutenberg texts etc.)""")
+        - Needle in a haystack test
+        - Do not use texts on which the model was trained, eg. new texts from https://paulgraham.com (no Gutenberg texts etc.)
+        """
+    )
     return
 
 

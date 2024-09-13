@@ -1,21 +1,21 @@
 import marimo
 
-__generated_with = "0.3.8"
+__generated_with = "0.7.17"
 app = marimo.App()
 
 
 @app.cell
 def __(mo):
-    mo.md("## Build a Superhero with Generative AI")
+    mo.md("""## Build a Superhero with Generative AI""")
     return
 
 
 @app.cell
 def __(mo):
     openaikey = mo.ui.text(label="🤖 OpenAI Key", kind="password")
-    #config = mo.hstack([openaikey])
-    mo.accordion({"⚙️ Enter your OpenAI key": openaikey})
-    return openaikey,
+    config = mo.hstack([openaikey])
+    mo.accordion({"⚙️ Enter your OpenAI key": config})
+    return config, openaikey
 
 
 @app.cell
@@ -34,15 +34,13 @@ def __(item, mo):
 
 
 @app.cell
-def __(OpenAI, content, item, mo, openai, openaikey, os):
+def __(content, item, mo, openai, openaikey):
     openai.api_key = openaikey.value
-    os.environ["OPENAI_API_KEY"] = openaikey.value
-    openai_client = OpenAI()
 
     result = None
     if item.value:
-        response = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",
+        response = openai.ChatCompletion.create(
+            model="gpt-4-turbo",
             messages=[
                 {
                     "role": "system",
@@ -61,7 +59,29 @@ def __(OpenAI, content, item, mo, openai, openaikey, os):
     {result}
     """
     ) if item.value else None
-    return openai_client, response, result
+    result = None
+    if item.value:
+        response = openai.ChatCompletion.create(
+            model="gpt-4-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a creative assistant. Your responses should use newlines.",
+                },
+                {"role": "user", "content": content},
+            ],
+        )
+
+        result = response.choices[0].message.content
+
+    mo.md(
+        f"""
+    🤖 Response:
+
+    {result}
+    """
+    ) if item.value else None
+    return response, result
 
 
 @app.cell
@@ -78,12 +98,12 @@ def __(mo, result):
 
 
 @app.cell
-def __(mo, openai_client, superhero):
+def __(mo, openai, superhero):
     catchphrase = None
 
     if superhero.value:
-        catchphraseResponse = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",
+        catchphraseResponse = openai.ChatCompletion.create(
+            model="gpt-4-turbo",
             messages=[
                 {"role": "system", "content": "You are a creative assistant."},
                 {
@@ -134,10 +154,8 @@ def __(generate_image_button, mo, openai, superhero):
 @app.cell
 def __():
     import marimo as mo
-    import os
     import openai
-    from openai import OpenAI
-    return OpenAI, mo, openai, os
+    return mo, openai
 
 
 if __name__ == "__main__":
